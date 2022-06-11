@@ -1,6 +1,6 @@
 # MTA:SA Server Docker image
 
-** Credits to @4O4, I only adjusted it to my needs.
+** Credits to @4O4, I only adjusted it to my needs. **
 
 Unofficial Docker image for Multi Theft Auto: San Andreas game server. Maintained mostly for myself, but also for anyone from the MTA community who find it useful.
 
