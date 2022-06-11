@@ -1,5 +1,5 @@
-ARG MTA_SERVER_VERSION=1.5.7
-ARG MTA_SERVER_BUILD_NUMBER=20359
+ARG MTA_SERVER_VERSION=1.5.9
+ARG MTA_SERVER_BUILD_NUMBER=21249
 
 FROM alpine:latest as helper
 
@@ -43,24 +43,21 @@ WORKDIR /mtasa
 
 COPY --from=helper /mtasa-rootfs /
 
-RUN groupadd -r mtasa && useradd --no-log-init -r -g mtasa mtasa \
-    && chown mtasa:mtasa . \
-    && mkdir /data /resources /resource-cache /native-modules \
-    && chown -R mtasa:mtasa /data /resources /resource-cache /native-modules /mtasa \
-    && chmod go+w /data /resources /resource-cache /native-modules \
-    && apt-get update \
+RUN mkdir /data /resources /resource-cache /native-modules \
+    && chmod go+w /data /resources /resource-cache /native-modules
+
+RUN apt-get update \
     && dpkg --add-architecture i386 \
     && apt-get install bash tar unzip libncursesw5 wget gdb -y \
     && apt-get autoclean -y \
     && apt-get autoremove -y
-
-USER mtasa
 
 RUN ls -la /mtasa/mods && rmdir ${MTA_SERVER_ROOT_DIR}/mods/deathmatch \
     && ln -sf /usr ${MTA_SERVER_ROOT_DIR}/mods/deathmatch \
     && ln -sfT /data ${MTA_SERVER_ROOT_DIR}/mods/deathmatch
     
 COPY entrypoint.sh /
+RUN chmod 0755 /entrypoint.sh
 
 ENV TERM=xterm
 
